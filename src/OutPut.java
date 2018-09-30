@@ -56,5 +56,49 @@ public class OutPut {
 // gradePath  输出结果文件路径
 	
 	
-	
+	public void outputGrade(String exercisePath, String answerPath, String gradePath) {
+
+		try {
+			BufferedReader exercisesReader = new BufferedReader(new FileReader(exercisePath));
+			BufferedReader answerReader = new BufferedReader(new FileReader(answerPath));
+			PrintWriter gradeWriter = new PrintWriter(new FileWriter(gradePath));
+			String exercises, answer;
+			int c = 0, w = 0;
+			StringBuilder correct = new StringBuilder("Correct: %d (");
+			StringBuilder wrong = new StringBuilder("Wrong: %d (");
+			while ((exercises = exercisesReader.readLine()) != null && (answer = answerReader.readLine()) != null) {
+				int exercisesPoint = exercises.indexOf(".");//索引
+				int answerPoint = answer.indexOf(".");
+				if (exercisesPoint != -1 && answerPoint != -1) {
+					int i = Integer.valueOf(exercises.substring(0, exercisesPoint).trim());
+					CreateExpression expression = new CreateExpression(exercises.substring(exercisesPoint + 1));
+					CreateRandom ans = new CreateRandom(answer.substring(answerPoint + 1));
+					String getresult = Calculate.getResult(expression);
+					String string = getresult;
+					if (string.equals(ans.toString())) {
+						c++;
+						correct.append(" " + i);
+						if (c % 30 == 0) {
+							correct.append("\r\n");
+						}
+					} else {
+						w++;
+						wrong.append(" " + i);
+						if (w % 30 == 0) {
+							wrong.append("-r\n");
+						}
+					}
+				}
+			}
+			gradeWriter.println(String.format(correct.append(" )").toString(), c));
+			gradeWriter.println(String.format(wrong.append(" )").toString(), w));
+			gradeWriter.flush();
+			exercisesReader.close();
+			answerReader.close();
+			gradeWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("已经比较完成，并生成输出文件");
+	}
 }

@@ -1,12 +1,11 @@
+//叶钰羽
 package sizeyunsuan;
 
-//import java.util.concurrent.ThreadLocalRandom;
-
 public class CreateRandom {
-	public int a; // 定义分子
-	public int b; // 定义分母
-//	ThreadLocalRandom random = ThreadLocalRandom.current();
-//	int parameterRange;
+
+	private int a; // 定义分子
+	private int b; // 定义分母
+
 	public CreateRandom(String string) { // 将数字的字符串形式转换为整数、分数形式
 		string = string.trim(); // 清除前后空格
 		int c = string.indexOf("'"); // 求带分数标志“'”的索引
@@ -24,6 +23,7 @@ public class CreateRandom {
 		}
 		build(a, b);//化简
 	}
+
 	public CreateRandom(int a, int b) {
 		build(a, b);
 	}
@@ -51,17 +51,14 @@ public class CreateRandom {
 		this.a = a / c;
 		this.b = b / c;
 	}
+
+	// 求公因子
 	private int comfactor(int a, int b) {
 		int mod = a % b;
 		return mod == 0 ? b : comfactor(b, mod);
 	}
 
-public double getDouble() {
-		return a / b;
-	}
-
-
-//加法 a + b
+	// 加法 a + b
 	public CreateRandom add(CreateRandom fraction) {
 		return new CreateRandom(this.a * fraction.b + fraction.a * this.b, this.b * fraction.b);
 	}//1/4+1/3
@@ -80,8 +77,8 @@ public double getDouble() {
 	public CreateRandom division(CreateRandom fraction) {
 		return new CreateRandom(this.a * fraction.b, b * fraction.a);
 	}
-//	CreateRandom createrandom() {
-//		return new CreateRandom(random.nextInt(1, parameterRange), random.nextInt(1, 10));
-//	}
 
+public double getDouble() {
+		return a / b;
+	}
 }
